@@ -2,6 +2,8 @@ package com.code.example.consumer;
 
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
+import com.code.rpc.RpcApplication;
+import com.code.rpc.config.RpcConfig;
 import com.code.rpc.proxy.ServiceProxyFactory;
 
 /**
@@ -13,6 +15,11 @@ import com.code.rpc.proxy.ServiceProxyFactory;
 public class EasyConsumerExample {
 
     public static void main(String[] args) {
+        // RPC框架初始化
+        RpcApplication.init();
+        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+        System.out.println("rpcConfig = " + rpcConfig);
+
         // 代理 - 实现消费者发起调用
         // 静态代理
         // UserService userService = new UserServiceProxy();
@@ -29,5 +36,8 @@ public class EasyConsumerExample {
         } else {
             System.out.println("user == null");
         }
+
+        long number = userService.getNumber();
+        System.out.println("number = " + number);
     }
 }
