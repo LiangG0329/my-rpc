@@ -8,7 +8,7 @@ import java.io.*;
  * @author Liang
  * @create 2024/3/14
  */
-public class JDKSerializer implements Serializer{
+public class JdkSerializer implements Serializer{
     /**
      *
      * @param object 需序列化的对象

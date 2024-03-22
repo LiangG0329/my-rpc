@@ -1,7 +1,6 @@
 package com.code.rpc.proxy;
 
 import com.code.rpc.RpcApplication;
-import com.code.rpc.config.RpcConfig;
 
 import java.lang.reflect.Proxy;
 

@@ -1,0 +1,3 @@
+#  开发者在当前目录下新建配置，加载自定义序列化器实现类(实现Serializer) key:全类名
+
+he=com.code.rpc.serializer.HessianSerializer

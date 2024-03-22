@@ -2,6 +2,7 @@ package com.code.example.provider;
 
 import com.code.example.common.service.UserService;
 import com.code.rpc.RpcApplication;
+import com.code.rpc.config.RpcConfig;
 import com.code.rpc.registry.LocalRegistry;
 import com.code.rpc.server.HttpServer;
 import com.code.rpc.server.VertxHttpServer;
@@ -16,6 +17,8 @@ public class EasyProviderExample {
     public static void main(String[] args) {
         // RPC框架初始化
         RpcApplication.init();
+        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+        System.out.println("rpcConfig = " + rpcConfig);
 
         // 向服务中心注册服务
         LocalRegistry.register(UserService.class.getName(), userServiceImpl.class);

@@ -4,10 +4,11 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
+import com.code.rpc.RpcApplication;
 import com.code.rpc.model.RpcRequest;
 import com.code.rpc.model.RpcResponse;
-import com.code.rpc.serializer.JDKSerializer;
 import com.code.rpc.serializer.Serializer;
+import com.code.rpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public class UserServiceProxy implements UserService {
     @Override
     public User getUser(User user) {
         // 指定序列化器
-        Serializer serializer = new JDKSerializer();
+        Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 构造 rpc 请求
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -36,7 +37,7 @@ public class UserServiceProxy implements UserService {
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             byte[] result;
             // 发送包含rpc请求的http请求,从http响应获取rpc响应
-            try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")
+            try (HttpResponse httpResponse = HttpRequest.post("http://localhost:" + RpcApplication.getRpcConfig().getServerHost())
                     .body(bodyBytes)
                     .execute()) {
                 result = httpResponse.bodyBytes();

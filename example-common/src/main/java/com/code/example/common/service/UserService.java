@@ -21,7 +21,7 @@ public interface UserService {
      *
      * @return
      */
-    default short getNumber() {
-        return 1;
+    default int getNumber() {
+        return  1;
     }
 }
