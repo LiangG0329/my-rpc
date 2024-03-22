@@ -10,7 +10,7 @@ import com.code.rpc.spi.SpiLoader;
  */
 public class SerializerFactory {
 
-    private static boolean isSpiLoaded = false;
+    private static volatile boolean isSpiLoaded = false;
 
     /**
      * 默认序列化器
@@ -18,7 +18,7 @@ public class SerializerFactory {
     private static final Serializer DEFAULT_SERIALIZER = new JdkSerializer();
 
     /**
-     * 获取序列化器实例
+     * 获取指定序列化器实例
      *
      * @param key 键
      * @return 序列化器

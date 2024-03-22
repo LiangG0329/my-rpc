@@ -8,7 +8,7 @@ import com.code.example.common.service.UserService;
  * @author Liang
  * @create 2024/3/14
  */
-public class userServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(User user) {

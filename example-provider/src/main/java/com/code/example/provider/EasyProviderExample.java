@@ -21,7 +21,7 @@ public class EasyProviderExample {
         System.out.println("rpcConfig = " + rpcConfig);
 
         // 向服务中心注册服务
-        LocalRegistry.register(UserService.class.getName(), userServiceImpl.class);
+        LocalRegistry.register(UserService.class.getName(), UserServiceImpl.class);
 
         // 启动 web 服务
         HttpServer httpServer = new VertxHttpServer();

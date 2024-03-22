@@ -1,0 +1,3 @@
+#  RPC框架注册中心实现类  key:全类名
+
+etcd=com.code.rpc.registry.EtcdRegistry
