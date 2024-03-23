@@ -26,13 +26,6 @@ public interface Registry {
     void register(ServiceMetaInfo serviceMetaInfo) throws Exception;
 
     /**
-     * 注册服务，指定过期时间（服务端）
-     * @param serviceMetaInfo 服务元信息
-     * @param timeOut 服务过期时间
-     */
-    void register(ServiceMetaInfo serviceMetaInfo, long timeOut) throws Exception;
-
-    /**
      * 注销未关联租约的服务 （服务端）
      * @param serviceMetaInfo 服务元信息
      */
@@ -49,4 +42,15 @@ public interface Registry {
      * 服务销毁
      */
     void destroy();
+
+    /**
+     * 心跳检测（服务端）
+     */
+    void heartBeat();
+
+    /**
+     * 监听（消费端）
+     * @param serviceNodeKey 服务节点键
+     */
+    void watch(String serviceNodeKey);
 }

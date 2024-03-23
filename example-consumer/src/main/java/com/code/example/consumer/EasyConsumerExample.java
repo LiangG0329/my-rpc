@@ -37,7 +37,21 @@ public class EasyConsumerExample {
             System.out.println("user == null");
         }
 
-        long number = userService.getNumber();
-        System.out.println("number = " + number);
+        newUser = userService.getUser(user);
+        if (newUser != null) {
+            System.out.println(newUser.getName());
+        } else {
+            System.out.println("user == null");
+        }
+
+        newUser = userService.getUser(user);
+        if (newUser != null) {
+            System.out.println(newUser.getName());
+        } else {
+            System.out.println("user == null");
+        }
+
+//        long number = userService.getNumber();
+//        System.out.println("number = " + number);
     }
 }

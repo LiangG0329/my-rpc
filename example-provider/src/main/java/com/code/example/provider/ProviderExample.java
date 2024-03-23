@@ -33,7 +33,7 @@ public class ProviderExample {
         serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
         serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
         try {
-            registry.register(serviceMetaInfo, rpcConfig.getRegistryConfig().getTimeout());
+            registry.register(serviceMetaInfo);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

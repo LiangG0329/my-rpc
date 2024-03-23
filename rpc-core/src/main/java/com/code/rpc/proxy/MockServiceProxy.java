@@ -21,6 +21,7 @@ public class MockServiceProxy implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 根据方法的返回值类型，生成特定的默认值对象
         Class<?> methodReturnType = method.getReturnType();
          log.info("mock invoke {}", method.getName());
         return getDefaultObject(methodReturnType);
