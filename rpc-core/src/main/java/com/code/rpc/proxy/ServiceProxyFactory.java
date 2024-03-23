@@ -11,6 +11,7 @@ import java.lang.reflect.Proxy;
  * @create 2024/3/15
  */
 public class ServiceProxyFactory {
+
     /**
      * 根据服务类获取代理对象
      *

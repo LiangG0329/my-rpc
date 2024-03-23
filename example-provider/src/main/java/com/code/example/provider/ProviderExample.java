@@ -8,6 +8,8 @@ import com.code.rpc.registry.LocalRegistry;
 import com.code.rpc.registry.Registry;
 import com.code.rpc.registry.RegistryFactory;
 import com.code.rpc.server.VertxHttpServer;
+import com.code.rpc.server.tcp.VertxTcpClient;
+import com.code.rpc.server.tcp.VertxTcpServer;
 
 /**
  * 注册中心测试
@@ -39,7 +41,11 @@ public class ProviderExample {
         }
 
         // 启动 web 服务
-        VertxHttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        // - 启动 HTTP 服务器
+        // VertxHttpServer httpServer = new VertxHttpServer();
+        // httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        // - 启动 TCP服务器
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }

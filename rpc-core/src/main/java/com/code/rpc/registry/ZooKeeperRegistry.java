@@ -16,7 +16,6 @@ import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class ZooKeeperRegistry implements Registry{
     /**
      * 本机注册的节点 key 集合（用于维护续期）
      */
-    private final Set<String> localRegistryNodeKeySet = new HashSet<>();
+    private final Set<String> localRegistryNodeKeySet = new ConcurrentHashSet<>();
 
     /**
      * 注册中心服务缓存

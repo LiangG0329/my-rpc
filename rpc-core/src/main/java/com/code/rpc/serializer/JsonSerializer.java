@@ -44,12 +44,12 @@ public class JsonSerializer implements Serializer{
      * @throws IOException IO异常
      */
     private <T> T handleRequest(RpcRequest rpcRequest, Class<T> type) throws IOException {
-        Class<?>[] parameterType = rpcRequest.getParameterType();
+        Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
         Object[] args = rpcRequest.getArgs();
 
         // 循环处理每个参数类型
-        for (int i = 0; i < parameterType.length; i++) {
-            Class<?> clazz = parameterType[i];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Class<?> clazz = parameterTypes[i];
             // 如果类型不同，则重新处理一下类型，转化为正确类型
             if (clazz.isAssignableFrom(args[i].getClass())) {
                 byte[] argBytes = OBJECT_MAPPER.writeValueAsBytes(args[i]);

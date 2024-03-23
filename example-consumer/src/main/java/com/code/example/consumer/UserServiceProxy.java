@@ -25,6 +25,7 @@ import java.util.List;
  * @create 2024/3/15
  */
 public class UserServiceProxy implements UserService {
+
     @Override
     public User getUser(User user) {
         // 指定序列化器
@@ -34,7 +35,7 @@ public class UserServiceProxy implements UserService {
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(UserService.class.getName())
                 .methodName("getUser")
-                .parameterType(new Class[]{User.class})
+                .parameterTypes(new Class[]{User.class})
                 .args(new Object[]{user})
                 .build();
 

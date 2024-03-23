@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @create 2024/3/14
  */
 public class LocalRegistry {
+
     /**
      * 注册信息存储
      */

@@ -14,6 +14,7 @@ import com.code.rpc.server.VertxHttpServer;
  * @create 2024/3/14
  */
 public class EasyProviderExample {
+
     public static void main(String[] args) {
         // RPC框架初始化
         RpcApplication.init();

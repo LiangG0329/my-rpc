@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,7 +51,7 @@ public class EtcdRegistry implements Registry{
     /**
      * 本机注册节点 key 的集合（用于维护续期）
      */
-    private final Set<String> localRegisterNodeKeySet = new HashSet<>();
+    private final Set<String> localRegisterNodeKeySet = new ConcurrentHashSet<>();
 
     /**
      * 注册中心服务缓存
