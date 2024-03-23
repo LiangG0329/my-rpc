@@ -6,20 +6,18 @@ import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.hutool.json.JSONUtil;
 import com.code.rpc.config.RegistryConfig;
-import com.code.rpc.config.RpcConfig;
 import com.code.rpc.model.ServiceMetaInfo;
 import io.etcd.jetcd.*;
-import io.etcd.jetcd.op.Op;
 import io.etcd.jetcd.options.GetOption;
 import io.etcd.jetcd.options.PutOption;
 import io.etcd.jetcd.watch.WatchEvent;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +26,7 @@ import java.util.stream.Collectors;
  * @author Liang
  * @create 2024/3/22
  */
+@Slf4j
 public class EtcdRegistry implements Registry{
 
     /**
@@ -43,12 +42,12 @@ public class EtcdRegistry implements Registry{
     /**
      * LeaseClient 子客户端，管理 etcd 的租约机制
      */
-    Lease leaseClient;
+    private Lease leaseClient;
 
     /**
      * WatchClient 子客户端，管理监听机制
      */
-    Watch watchClient;
+    private Watch watchClient;
 
     /**
      * 本机注册节点 key 的集合（用于维护续期）
@@ -61,14 +60,19 @@ public class EtcdRegistry implements Registry{
     private final RegistryServiceCache registryServiceCache = new RegistryServiceCache();
 
     /**
-     * 监听的 key 的集合
+     * 正在监听的 key 的集合
      */
     private final Set<String> watchingKeySet = new ConcurrentHashSet<>();
 
     /**
      * 根节点（etcd数据库内）
      */
-    private static final String ETCD_ROOT_PATH = "/rpc/";
+    private static final String ETCD_ROOT_PATH = "/rpc/etcd/";
+
+    /**
+     * 注册中心配置服务过期时间  单位:ms
+     */
+    private static long timeout;
 
     @Override
     public void init(RegistryConfig registryConfig) {
@@ -79,6 +83,7 @@ public class EtcdRegistry implements Registry{
         kvClient = client.getKVClient();
         leaseClient = client.getLeaseClient();
         watchClient = client.getWatchClient();
+        timeout = registryConfig.getTimeout() / 1000;
         // 启动心跳检测，定期续约
         heartBeat();
     }
@@ -91,7 +96,7 @@ public class EtcdRegistry implements Registry{
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
 
         // 创建指定时间的租约
-        long leaseId = leaseClient.grant(30).get().getID();
+        long leaseId = leaseClient.grant(timeout).get().getID();
 
         // 设置需要存储的键值对
         String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
@@ -129,7 +134,10 @@ public class EtcdRegistry implements Registry{
         localRegisterNodeKeySet.add(registerKey);
     }
 
-    // 只能删除未关联租约的服务;开启租约条件下，删除无法成功
+    /**
+     * 注销服务
+     * @param serviceMetaInfo 服务元信息
+     */
     @Override
     public void unRegister(ServiceMetaInfo serviceMetaInfo) {
         String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
@@ -143,7 +151,7 @@ public class EtcdRegistry implements Registry{
     }
 
     /**
-     * 删除关联租约的节点
+     * 删除指定租约的节点
      * @param serviceMetaInfo 服务元信息
      * @param leaseId leaseId
      */
@@ -164,7 +172,7 @@ public class EtcdRegistry implements Registry{
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
         // 优先从缓存获取服务
         List<ServiceMetaInfo> cacheServiceMetaInfoList = registryServiceCache.readCache();
-        if (CollUtil.isNotEmpty(cacheServiceMetaInfoList)) {
+        if (!CollUtil.isEmpty(cacheServiceMetaInfoList)) {
             return cacheServiceMetaInfoList;
         }
 
@@ -177,6 +185,7 @@ public class EtcdRegistry implements Registry{
             List<KeyValue> keyValues = kvClient.get(ByteSequence.from(searchPrefix, StandardCharsets.UTF_8), getOption)
                     .get()
                     .getKvs();
+
             // 解析服务信息
             List<ServiceMetaInfo> serviceMetaInfoList = keyValues.stream()
                     .map(keyValue -> {
@@ -187,6 +196,7 @@ public class EtcdRegistry implements Registry{
                         return JSONUtil.toBean(value, ServiceMetaInfo.class);
                     })
                     .collect(Collectors.toList());
+
             // 写入本地缓存
             registryServiceCache.writeCache(serviceMetaInfoList);
             return serviceMetaInfoList;
@@ -259,7 +269,7 @@ public class EtcdRegistry implements Registry{
 
     @Override
     public void destroy() {
-        System.out.println("当前节点下线");
+        log.info("当前节点下线");
 
         // 下线节点
         // 遍历删除缓存中的节点
@@ -274,6 +284,12 @@ public class EtcdRegistry implements Registry{
         // 释放资源
         if (kvClient != null) {
             kvClient.close();
+        }
+        if (leaseClient != null) {
+            leaseClient.close();
+        }
+        if (watchClient != null) {
+            watchClient.close();
         }
         if (client != null) {
             client.close();
