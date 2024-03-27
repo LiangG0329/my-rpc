@@ -11,9 +11,9 @@ import com.code.rpc.spi.SpiLoader;
 public class RegistryFactory {
 
     /**
-     * 是否已完成SPI加载
+     * 是否已完成 SPI 加载
      */
-    private static volatile boolean isSpiLoaded = false;
+    private static volatile boolean isRegistrySpiLoaded = false;
 
     /**
      * 默认注册中心
@@ -27,11 +27,11 @@ public class RegistryFactory {
      * @return 注册中心实例
      */
     public static Registry getInstance(String key) {
-        if (!isSpiLoaded) {
+        if (!isRegistrySpiLoaded) {
             synchronized (RegistryFactory.class) {
-                if (!isSpiLoaded) {
+                if (!isRegistrySpiLoaded) {
                     SpiLoader.load(Registry.class);
-                    isSpiLoaded = true;
+                    isRegistrySpiLoaded = true;
                 }
             }
         }

@@ -59,7 +59,7 @@ public class ServiceMetaInfo {
     }
 
     /**
-     * 获取完整服务节点地址
+     * 获取完整服务节点地址  http://servicePort:servicePort
      *
      * @return 服务节点地址
      */

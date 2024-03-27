@@ -1,0 +1,5 @@
+# 系统提供负载均衡器
+
+roundRobin=com.code.rpc.loadbalancer.RoundRobinLoadBalancer
+random=com.code.rpc.loadbalancer.RandomLoadBalancer
+consistentHash=com.code.rpc.loadbalancer.ConsistentHashLoadBalancer

@@ -14,7 +14,7 @@ import com.code.rpc.proxy.ServiceProxyFactory;
  */
 public class EasyConsumerExample {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // RPC框架初始化
         RpcApplication.init();
         RpcConfig rpcConfig = RpcApplication.getRpcConfig();
@@ -37,6 +37,7 @@ public class EasyConsumerExample {
             System.out.println("user == null");
         }
 
+        Thread.sleep(3000);
         newUser = userService.getUser(user);
         if (newUser != null) {
             System.out.println(newUser.getName());
@@ -44,6 +45,7 @@ public class EasyConsumerExample {
             System.out.println("user == null");
         }
 
+        Thread.sleep(3000);
         newUser = userService.getUser(user);
         if (newUser != null) {
             System.out.println(newUser.getName());

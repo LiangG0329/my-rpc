@@ -1,5 +1,6 @@
 package com.code.rpc.config;
 
+import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -33,12 +34,12 @@ public class RpcConfig {
     private Integer serverPort = 8080;
 
     /**
-     * 开启mock,模拟调用
+     * 开启 mock ,模拟调用
      */
     private boolean mock = false;
 
     /**
-     * 序列化器
+     * 序列化器（默认 JDK）
      */
     private String serializer = SerializerKeys.JDK;
 
@@ -46,4 +47,9 @@ public class RpcConfig {
      * 注册中心配置
      */
     private RegistryConfig registryConfig = new RegistryConfig();
+
+    /**
+     * 负载均衡器（默认轮询）
+     */
+    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
 }

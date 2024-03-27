@@ -68,6 +68,12 @@
             <artifactId>curator-x-discovery</artifactId>
             <version>5.6.0</version>
         </dependency>
+        <!-- zero-allocation-hashing -->
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>zero-allocation-hashing</artifactId>
+            <version>0.16</version>
+        </dependency>
         <!-- https://projectlombok.org/ -->
         <dependency>
             <groupId>org.projectlombok</groupId>

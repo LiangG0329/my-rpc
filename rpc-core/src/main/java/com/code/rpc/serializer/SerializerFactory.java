@@ -10,7 +10,7 @@ import com.code.rpc.spi.SpiLoader;
  */
 public class SerializerFactory {
 
-    private static volatile boolean isSpiLoaded = false;
+    private static volatile boolean isSerializerSpiLoaded = false;
 
     /**
      * 默认序列化器
@@ -24,11 +24,11 @@ public class SerializerFactory {
      * @return 序列化器
      */
     public static Serializer getInstance(String key) {
-        if (!isSpiLoaded) {
+        if (!isSerializerSpiLoaded) {
             synchronized (SerializerFactory.class) {
-                if (!isSpiLoaded) {
+                if (!isSerializerSpiLoaded) {
                     SpiLoader.load(Serializer.class);
-                    isSpiLoaded = true;
+                    isSerializerSpiLoaded = true;
                 }
             }
         }

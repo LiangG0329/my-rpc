@@ -17,9 +17,9 @@ import java.util.Objects;
 public class ConfigUtils {
     /**
      * 加载配置对象，不指定环境
-     * @param tClass
-     * @param prefix
-     * @return
+     * @param tClass 读取配置文件加载目标对象的 Class 对象
+     * @param prefix 配置项前缀
+     * @return 配置对象
      * @param <T>
      */
     public static <T> T loadConfig(Class<T> tClass, String prefix) {
@@ -29,7 +29,7 @@ public class ConfigUtils {
     /**
      * 加载配置对象，支持区分环境  application-test/prod/...
      *
-     * @param tClass 读取配置文件加载目标对象的Class对象
+     * @param tClass 读取配置文件加载目标对象的 Class 对象
      * @param prefix 配置项前缀
      * @param environment 环境
      * @param <T>
