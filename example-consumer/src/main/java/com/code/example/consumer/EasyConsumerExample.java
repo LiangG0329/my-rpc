@@ -38,20 +38,20 @@ public class EasyConsumerExample {
         }
 
         Thread.sleep(3000);
-        newUser = userService.getUser(user);
-        if (newUser != null) {
-            System.out.println(newUser.getName());
-        } else {
-            System.out.println("user == null");
-        }
-
-        Thread.sleep(3000);
-        newUser = userService.getUser(user);
-        if (newUser != null) {
-            System.out.println(newUser.getName());
-        } else {
-            System.out.println("user == null");
-        }
+//        newUser = userService.getUser(user);
+//        if (newUser != null) {
+//            System.out.println(newUser.getName());
+//        } else {
+//            System.out.println("user == null");
+//        }
+//
+//        //Thread.sleep(3000);
+//        newUser = userService.getUser(user);
+//        if (newUser != null) {
+//            System.out.println(newUser.getName());
+//        } else {
+//            System.out.println("user == null");
+//        }
 
         System.exit(0);
 //        long number = userService.getNumber();

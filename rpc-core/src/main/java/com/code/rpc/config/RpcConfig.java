@@ -1,5 +1,6 @@
 package com.code.rpc.config;
 
+import com.code.rpc.fault.retry.RetryStrategyKeys;
 import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -52,4 +53,9 @@ public class RpcConfig {
      * 负载均衡器（默认轮询）
      */
     private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyKeys.NO;
 }

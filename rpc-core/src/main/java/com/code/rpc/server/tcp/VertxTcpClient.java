@@ -89,6 +89,9 @@ public class VertxTcpClient {
 
         // 阻塞，直到响应完成获取结果，将异步转为同步
         RpcResponse rpcResponse = responseFuture.get();
+        if (rpcResponse.getException() != null) {
+            throw new RuntimeException("调用结果异常：" + rpcResponse.getMessage(), rpcResponse.getException());
+        }
         // 关闭连接，返回RPC响应的响应数据部分
         netClient.close();
         return rpcResponse;

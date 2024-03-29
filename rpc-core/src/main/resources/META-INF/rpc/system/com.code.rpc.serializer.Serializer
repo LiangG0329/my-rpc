@@ -1,4 +1,4 @@
-#  RPC框架自带序列化器实现类  key:全类名
+#  系统提供序列化器
 
 jdk=com.code.rpc.serializer.JdkSerializer
 hessian=com.code.rpc.serializer.HessianSerializer

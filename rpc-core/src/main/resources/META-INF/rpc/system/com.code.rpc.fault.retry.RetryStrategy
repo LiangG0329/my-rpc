@@ -1,0 +1,7 @@
+# 系统提供重试器
+no=com.code.rpc.fault.retry.NoRetryStrategy
+fixedInterval=com.code.rpc.fault.retry.FixedIntervalRetryStrategy
+exponentialBackoff=com.code.rpc.fault.retry.ExponentialBackoffRetryStrategy
+fibonacciInterval=com.code.rpc.fault.retry.FibonacciIntervalRetryStrategy
+randomDelay=com.code.rpc.fault.retry.RandomDelayRetryStrategy
+composite=com.code.rpc.fault.retry.CompositeRetryStrategy
