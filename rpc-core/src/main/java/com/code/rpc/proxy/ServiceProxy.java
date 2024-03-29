@@ -8,6 +8,8 @@ import com.code.rpc.config.RpcConfig;
 import com.code.rpc.constant.RpcConstant;
 import com.code.rpc.fault.retry.RetryStrategy;
 import com.code.rpc.fault.retry.RetryStrategyFactory;
+import com.code.rpc.fault.tolerant.TolerantStrategy;
+import com.code.rpc.fault.tolerant.TolerantStrategyFactory;
 import com.code.rpc.loadbalancer.LoadBalancer;
 import com.code.rpc.loadbalancer.LoadBalancerFactory;
 import com.code.rpc.model.RpcRequest;
@@ -80,11 +82,24 @@ public class ServiceProxy implements InvocationHandler {
 //            }
 
             // 发送携带 RPC 请求 的 TCP 请求，从响应获取 RPC 响应
+            RpcResponse rpcResponse;
+            // 保存上下文信息（服务列表，故障服务，RPC 请求，负载均衡器），异常时传递给容错处理策略
+            Map<String, Object> context = new HashMap<>();
+            context.put("serviceList", serviceMetaInfoList);
+            context.put("errorService", selectedServiceMetaInfo);
+            context.put("rpcRequest", rpcRequest);
+            context.put("loadBalancer", rpcConfig.getLoadBalancer());
             // 使用重试机制发起请求
-            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
-            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
-                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
-            );
+            try {
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+                rpcResponse = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+                );
+            } catch (Exception e) {
+                // 容错机制
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                rpcResponse = tolerantStrategy.doTolerant(context, e);
+            }
             return rpcResponse.getData();
         } catch (Exception e) {
             throw new RuntimeException("调用失败", e);
@@ -93,8 +108,8 @@ public class ServiceProxy implements InvocationHandler {
 
     /**
      * 发送携带 RPC 请求 的 HTTP 请求，从响应获取 RPC 响应
-     * @param serviceMetaInfo
-     * @param bodyBytes
+     * @param serviceMetaInfo 服务元信息
+     * @param bodyBytes 消息体字节流
      * @return RPC 响应
      */
     public static RpcResponse doHttpRequest(ServiceMetaInfo serviceMetaInfo, byte[] bodyBytes) {

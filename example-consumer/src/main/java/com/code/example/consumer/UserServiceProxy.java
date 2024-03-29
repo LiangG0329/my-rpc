@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 服务代理 静态代理
+ *
  * @author Liang
  * @create 2024/3/15
  */

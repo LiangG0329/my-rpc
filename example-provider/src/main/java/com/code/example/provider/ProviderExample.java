@@ -26,6 +26,7 @@ public class ProviderExample {
         // 注册服务
         String serviceName = UserService.class.getName();
         LocalRegistry.register(serviceName, UserServiceImpl.class);
+        //LocalRegistry.register(serviceName, UserServiceImpl_2.class);
 
         // 注册服务到注册中心
         RpcConfig rpcConfig = RpcApplication.getRpcConfig();

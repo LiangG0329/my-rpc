@@ -9,16 +9,14 @@ import com.code.example.common.service.UserService;
  * @author Liang
  * @create 2024/3/14
  */
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl_2 implements UserService {
 
     @Override
     public User getUser(User user) {
 
         System.out.println("修改前用户名：" + user.getName());
-        user.setName("hello world");
+        user.setName("hello, hope you happy everyday");
         System.out.println("修改后用户名： " + user.getName());
-        throw new RuntimeException("模拟调用失败");
-//        return user;
-
+        return user;
     }
 }

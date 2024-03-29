@@ -1,7 +1,9 @@
 package com.code.rpc.config;
 
 import com.code.rpc.fault.retry.RetryStrategyKeys;
+import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
 import com.code.rpc.loadbalancer.LoadBalancerKeys;
+import com.code.rpc.mock.MockServiceKeys;
 import com.code.rpc.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -58,4 +60,14 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.NO;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
+
+    /**
+     * 模拟服务
+     */
+    private String mockService = MockServiceKeys.DEFAULT;
 }
