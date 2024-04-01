@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * 失败自动降级恢复 - 容错策略 （调用消费者本地服务方法）
+ *
  * @author Liang
  * @create 2024/3/29
  */

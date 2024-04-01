@@ -8,14 +8,16 @@
     <artifactId>my-rpc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <modules>
-        <module>example-common</module>
-        <module>example-common</module>
-        <module>example-provider</module>
-        <module>example-consumer</module>
-        <module>rpc-easy</module>
-        <module>rpc-core</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>example-common</module>-->
+<!--        <module>example-common</module>-->
+<!--        <module>example-provider</module>-->
+<!--        <module>example-consumer</module>-->
+<!--        <module>rpc-easy</module>-->
+<!--        <module>rpc-core</module>-->
+<!--        <module>rpc-spring-boot-starter</module>-->
+<!--        <module>example-springboot-consumer</module>-->
+<!--    </modules>-->
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

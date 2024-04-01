@@ -17,7 +17,8 @@ public class RegistryConfig {
     private String registry = "etcd";
 
     /**
-     * 注册中心地址  注意：etcd注册中心地址需包含 ”http://"或"https://"前缀  zookeeper注册中心地址不包含前缀
+     * 注册中心地址<br>
+     * 注意：etcd注册中心地址需包含 ”http://"或"https://"前缀  zookeeper注册中心地址不包含前缀
      */
     private String address = "http://localhost:2379";
 

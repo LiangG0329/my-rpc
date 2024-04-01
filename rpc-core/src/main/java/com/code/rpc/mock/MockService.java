@@ -9,10 +9,8 @@ package com.code.rpc.mock;
 public interface MockService {
 
     /**
-     * 本地方法
+     * 本地方法（降级服务）
      * @return data
      */
-    default Object mock() {
-        return null;
-    }
+    Object mock();
 }

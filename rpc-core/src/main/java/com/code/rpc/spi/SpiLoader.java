@@ -8,7 +8,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -33,12 +36,12 @@ public class SpiLoader {
     /**
      * 系统 SPI 目录
      */
-    private static String RPC_SYSTEM_SPI_DIR = "META-INF/rpc/system/";
+    private static final String RPC_SYSTEM_SPI_DIR = "META-INF/rpc/system/";
 
     /**
      * 用户自定义 SPI 目录
      */
-    private static String RPC_CUSTOM_SPI_DIR = "META-INF/rpc/custom/";
+    private static final String RPC_CUSTOM_SPI_DIR = "META-INF/rpc/custom/";
 
     /**
      * 扫描路径
@@ -49,8 +52,6 @@ public class SpiLoader {
      * 动态加载类列表  全类名 com.code.rpc.serializer.Serializer
      */
     private static final List<Class<?>> LOAD_CLASS_LIST = Arrays.asList(Serializer.class);
-
-    // private static volatile Set<String> loadClassName = new HashSet<>();
 
     /**
      * 加载所有类型
@@ -82,6 +83,7 @@ public class SpiLoader {
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
+                        if (line.startsWith("#")) continue;
                         String[] strArray = line.split("=");
                         if (strArray.length > 1) {
                             String key = strArray[0];
@@ -108,14 +110,6 @@ public class SpiLoader {
      */
     public static <T> T getInstance(Class<?> tClass, String key) {
         String tClassName = tClass.getName();
-//        if (!loadClassName.contains(tClassName)) {
-//            synchronized (SpiLoader.class) {
-//                if (!loadClassName.contains(tClassName)) {
-//                    load(tClass);
-//                    loadClassName.add(tClassName);
-//                }
-//            }
-//        }
         Map<String, Class<?>> keyClassMap = loadMap.get(tClassName);
         if (keyClassMap == null) {
             throw new RuntimeException(String.format("SpiLoader 未加载 %s 的类型", tClassName));

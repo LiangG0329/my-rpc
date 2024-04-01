@@ -1,11 +1,8 @@
 package com.code.rpc.config;
 
-import com.code.rpc.fault.retry.RetryStrategyKeys;
-import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
-import com.code.rpc.loadbalancer.LoadBalancerKeys;
-import com.code.rpc.mock.MockServiceKeys;
-import com.code.rpc.serializer.SerializerKeys;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * RPC 框架全局配置
@@ -14,37 +11,39 @@ import lombok.Data;
  * @create 2024/3/21
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RpcConfig {
 
     /**
      * 名称
      */
-    private String name ="my-prc";
+    private String name;
 
     /**
      * 版本号
      */
-    private String version = "1.0";
+    private String version;
 
     /**
      * 服务器主机名称
      */
-    private String serverHost = "localhost";
+    private String serverHost;
 
     /**
      * 服务器端口号
      */
-    private Integer serverPort = 8080;
+    private Integer serverPort;
 
     /**
-     * 开启 mock ,模拟调用
+     * 开启 Mock 服务代理,模拟调用
      */
-    private boolean mock = false;
+    private Boolean mock;
 
     /**
      * 序列化器（默认 JDK）
      */
-    private String serializer = SerializerKeys.JDK;
+    private String serializer;
 
     /**
      * 注册中心配置
@@ -54,20 +53,20 @@ public class RpcConfig {
     /**
      * 负载均衡器（默认轮询）
      */
-    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+    private String loadBalancer;
 
     /**
      * 重试策略
      */
-    private String retryStrategy = RetryStrategyKeys.NO;
+    private String retryStrategy;
 
     /**
      * 容错策略
      */
-    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
+    private String tolerantStrategy;
 
     /**
-     * 模拟服务
+     * 降级模拟服务
      */
-    private String mockService = MockServiceKeys.DEFAULT;
+    private String mockService;
 }

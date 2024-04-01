@@ -1,0 +1,3 @@
+# 系统提供模拟服务（降级服务）
+
+default=com.code.rpc.mock.DefaultMockService

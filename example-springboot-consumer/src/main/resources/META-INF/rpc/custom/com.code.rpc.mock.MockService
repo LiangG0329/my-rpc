@@ -1,0 +1,3 @@
+# 用户自定义本地模拟服务
+
+userMockService=com.code.examplespringbootconsumer.MockUserServiceImpl

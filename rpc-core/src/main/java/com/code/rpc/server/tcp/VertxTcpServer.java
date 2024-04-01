@@ -2,7 +2,6 @@ package com.code.rpc.server.tcp;
 
 import com.code.rpc.server.HttpServer;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 
 import java.util.Arrays;

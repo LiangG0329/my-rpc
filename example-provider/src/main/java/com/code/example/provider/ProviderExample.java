@@ -7,12 +7,10 @@ import com.code.rpc.model.ServiceMetaInfo;
 import com.code.rpc.registry.LocalRegistry;
 import com.code.rpc.registry.Registry;
 import com.code.rpc.registry.RegistryFactory;
-import com.code.rpc.server.VertxHttpServer;
-import com.code.rpc.server.tcp.VertxTcpClient;
 import com.code.rpc.server.tcp.VertxTcpServer;
 
 /**
- * 注册中心测试
+ * 服务提供者示例
  *
  * @author Liang
  * @create 2024/3/22

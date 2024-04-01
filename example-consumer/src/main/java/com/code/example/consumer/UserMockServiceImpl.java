@@ -13,7 +13,7 @@ public class UserMockServiceImpl implements MockService {
 
     @Override
     public Object mock() {
-        System.out.println("what good thing we lost, what bad thing we knew");
-        return new User("what good thing we lost, what bad thing we knew");
+        System.out.println("what good thing we lost");
+        return new User("what bad thing we knew");
     }
 }

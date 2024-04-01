@@ -3,7 +3,6 @@ package com.code.rpc.fault.tolerant;
 import com.code.rpc.model.RpcResponse;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * 容错策略
