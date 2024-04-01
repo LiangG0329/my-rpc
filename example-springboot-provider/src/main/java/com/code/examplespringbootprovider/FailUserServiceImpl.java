@@ -2,6 +2,7 @@ package com.code.examplespringbootprovider;
 
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
+import com.code.rpc.springboot.starter.annotation.RpcService;
 import org.springframework.stereotype.Service;
 
 /**

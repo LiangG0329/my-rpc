@@ -77,6 +77,18 @@
             <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
+        <!-- snake yaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>

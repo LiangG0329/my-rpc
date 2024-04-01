@@ -61,6 +61,8 @@ public class ZooKeeperRegistry implements Registry{
         // 构建 client 实例
         client = CuratorFrameworkFactory
                 .builder()
+                .sessionTimeoutMs(5000)
+                .connectionTimeoutMs(5000)
                 .connectString(registryConfig.getAddress())
                 .retryPolicy(new ExponentialBackoffRetry(Math.toIntExact(registryConfig.getTimeout()), 3))
                 .build();

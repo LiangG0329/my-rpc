@@ -9,12 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * 配置工具类
+ * .properties 配置文件工具类
  *
  * @author Liang
  * @create 2024/3/21
  */
 public class ConfigUtils {
+
     /**
      * 加载配置对象，不指定环境
      * @param tClass 读取配置文件加载目标对象的 Class 对象
@@ -27,7 +28,7 @@ public class ConfigUtils {
     }
 
     /**
-     * 加载配置对象，支持区分环境  application-test/prod/...
+     * 加载配置对象，支持区分环境  application-test/prod/xxx.properties
      *
      * @param tClass 读取配置文件加载目标对象的 Class 对象
      * @param prefix 配置项前缀
@@ -46,11 +47,13 @@ public class ConfigUtils {
         try {
             Props props = new Props();
             props.load(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(configFilePath)), StandardCharsets.UTF_8));
+            System.out.println("加载 .properties 文件");
             return props.toBean(tClass, prefix);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("加载 .properties 文件失败");
+            // e.printStackTrace();
+            throw new RuntimeException("加载配置文件失败", e);
         }
 
-        return null;
     }
 }

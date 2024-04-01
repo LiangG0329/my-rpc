@@ -1,0 +1,13 @@
+rpc:
+  name: rpc
+  version: 2.0
+  serverPort: 8081
+  mock: false
+  serializer: jdk
+  registryConfig:
+    registry: etcd
+    address: http://localhost:2379
+  loadBalancer: roundRobin
+  retryStrategy: fixedInterval
+  tolerantStrategy: failFast
+  mockService: userMockService

@@ -17,7 +17,12 @@ class ExampleConsumerTest {
     private ExampleConsumer exampleService;
 
     @Test
-    void test1() {
+    void test1() throws InterruptedException {
         exampleService.test();
+//        Thread.sleep(2000);
+//        exampleService.test();
+//        Thread.sleep(2000);
+//        exampleService.test();
+//        Thread.sleep(2000);
     }
 }

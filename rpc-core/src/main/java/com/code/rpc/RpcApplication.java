@@ -14,6 +14,7 @@ import com.code.rpc.registry.Registry;
 import com.code.rpc.registry.RegistryFactory;
 import com.code.rpc.serializer.SerializerKeys;
 import com.code.rpc.utils.ConfigUtils;
+import com.code.rpc.utils.YamlConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -57,12 +58,17 @@ public class RpcApplication {
     }
 
     /**
-     * 初始化
+     * 初始化 读取配置文件
      */
     public static void init() {
         RpcConfig newRpcConfig;
         try {
-            newRpcConfig = ConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_CONFIG_PREFIX);
+            // 读取 .yml 文件
+            newRpcConfig = YamlConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_CONFIG_PREFIX);
+            if (newRpcConfig == null) {
+                // 读取 .properties 文件
+                newRpcConfig = ConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_CONFIG_PREFIX);
+            }
         } catch (Exception e) {
             // 配置加载失败，使用默认值
             newRpcConfig = new RpcConfig();
@@ -126,7 +132,6 @@ public class RpcApplication {
         if (StrUtil.isBlank(rpcConfig.getLoadBalancer())) {
             rpcConfig.setLoadBalancer(LoadBalancerKeys.ROUND_ROBIN);
         }
-
 
         // 重试策略
         if (StrUtil.isBlank(rpcConfig.getRetryStrategy())) {
