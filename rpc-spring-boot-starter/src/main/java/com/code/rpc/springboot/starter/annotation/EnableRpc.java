@@ -31,7 +31,7 @@ public @interface EnableRpc {
     boolean needServer() default true;
 
 
-    /* 消费者端配置 */
+    /* 消费者全局配置 */
     /**
      * 负载均衡器，默认轮询
      */

@@ -1,5 +1,6 @@
 package com.code.rpc.springboot.starter.bootstrap;
 
+import com.code.rpc.config.ServiceRpcConfig;
 import com.code.rpc.proxy.ServiceProxyFactory;
 import com.code.rpc.springboot.starter.annotation.RpcReference;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -37,7 +38,20 @@ public class RpcConsumerBootstrap implements BeanPostProcessor {
                     interfaceClass = field.getType();
                 }
                 field.setAccessible(true);
-                Object proxy = ServiceProxyFactory.getProxy(interfaceClass);
+                // 构建单个服务级别的 PRC 配置
+                boolean mock = rpcReference.mock();
+                String loadBalancer = rpcReference.loadBalancer();
+                String retryStrategy = rpcReference.retryStrategy();
+                String tolerantStrategy = rpcReference.tolerantStrategy();
+                String mockService = rpcReference.mockService();
+                ServiceRpcConfig serviceRpcConfig = ServiceRpcConfig.builder()
+                        .mock(mock)
+                        .loadBalancer(loadBalancer)
+                        .retryStrategy(retryStrategy)
+                        .tolerantStrategy(tolerantStrategy)
+                        .mockService(mockService)
+                        .build();
+                Object proxy = ServiceProxyFactory.getProxy(interfaceClass, serviceRpcConfig);
                 // 为字段注入服务代理对象
                 try {
                     field.set(bean, proxy);

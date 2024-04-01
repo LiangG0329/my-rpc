@@ -46,7 +46,7 @@ public class RpcApplication {
         BeanUtil.copyProperties(newRpcConfig, rpcConfig, CopyOptions.create().setIgnoreNullValue(true));
         // 验证，为空值填充默认值
         RpcApplication.validAndFillRpcConfig(rpcConfig);
-        log.info("RPC init, config = {}", rpcConfig.toString());
+        log.info("RPC init, config = {}", rpcConfig);
         // 注册中心初始化
         RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
         Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());

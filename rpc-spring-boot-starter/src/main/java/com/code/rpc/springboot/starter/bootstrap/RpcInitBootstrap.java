@@ -51,7 +51,7 @@ public class RpcInitBootstrap implements ImportBeanDefinitionRegistrar {
         // RPC框架初始化（配置和注册中心）
         RpcApplication.init();
 
-        log.info("RPC config: " + rpcConfig);
+        log.info("Global RPC Config: " + rpcConfig);
 
         // 启动服务
         if (needServer) {

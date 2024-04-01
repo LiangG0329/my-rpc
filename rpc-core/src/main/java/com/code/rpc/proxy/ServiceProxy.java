@@ -1,10 +1,12 @@
 package com.code.rpc.proxy;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.code.rpc.RpcApplication;
 import com.code.rpc.config.RpcConfig;
+import com.code.rpc.config.ServiceRpcConfig;
 import com.code.rpc.constant.RpcConstant;
 import com.code.rpc.fault.retry.RetryStrategy;
 import com.code.rpc.fault.retry.RetryStrategyFactory;
@@ -20,6 +22,10 @@ import com.code.rpc.registry.RegistryFactory;
 import com.code.rpc.serializer.Serializer;
 import com.code.rpc.serializer.SerializerFactory;
 import com.code.rpc.server.tcp.VertxTcpClient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -34,7 +40,13 @@ import java.util.Map;
  * @author Liang
  * @create 2024/3/15
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Slf4j
 public class ServiceProxy implements InvocationHandler {
+
+    private ServiceRpcConfig serviceRpcConfig;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -50,8 +62,13 @@ public class ServiceProxy implements InvocationHandler {
                 .args(args)
                 .build();
         try {
-            // 从注册中心获取服务提供者地址
+            // 获取服务配置
             RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            if (serviceRpcConfig != null) {
+                buildServiceRpcConfig(rpcConfig, serviceRpcConfig);
+            }
+            log.info("Service RPC Config: " + rpcConfig);
+            // 从注册中心获取服务提供者地址
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
             ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
             serviceMetaInfo.setServiceName(serviceName);
@@ -125,6 +142,20 @@ public class ServiceProxy implements InvocationHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private static void buildServiceRpcConfig(RpcConfig rpcConfig, ServiceRpcConfig serviceRpcConfig) {
+        if (StrUtil.isNotBlank(serviceRpcConfig.getLoadBalancer())) {
+            rpcConfig.setLoadBalancer(serviceRpcConfig.getLoadBalancer());
+        }
+        if (StrUtil.isNotBlank(serviceRpcConfig.getRetryStrategy())) {
+            rpcConfig.setRetryStrategy(serviceRpcConfig.getRetryStrategy());
+        }
+        if (StrUtil.isNotBlank(serviceRpcConfig.getTolerantStrategy())) {
+            rpcConfig.setTolerantStrategy(serviceRpcConfig.getTolerantStrategy());
+        }
+        if (StrUtil.isNotBlank(serviceRpcConfig.getMockService())) {
+            rpcConfig.setMockService(serviceRpcConfig.getMockService());
+        }
     }
 }

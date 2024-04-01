@@ -2,6 +2,8 @@ package com.code.examplespringbootconsumer;
 
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
+import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
+import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.springboot.starter.annotation.RpcReference;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,10 @@ public class ExampleConsumer {
     /**
      * 使用 Rpc 框架注入
      */
-    @RpcReference(interfaceClass = UserService.class)
+    @RpcReference(interfaceClass = UserService.class,
+            tolerantStrategy = TolerantStrategyKeys.FAIL_FAST,
+            loadBalancer = LoadBalancerKeys.ROUND_ROBIN,
+            mock = true)
     private UserService userService;
 
     /**
@@ -27,7 +32,11 @@ public class ExampleConsumer {
         user.setName("what good thing we lose");
         System.out.println("origin user name: " + user.getName());
         User resultUser = userService.getUser(user);
-        System.out.println("new user name: " + resultUser.getName());
+        if (resultUser != null) {
+            System.out.println("new user name: " + resultUser.getName());
+        } else {
+            System.out.println("new user: null");
+        }
     }
 
 }

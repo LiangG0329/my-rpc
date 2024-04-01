@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 public class RpcConfig {
 
     /**
-     * 名称
+     * RPC 框架名称
      */
     private String name;
 
     /**
-     * 版本号
+     * RPC 框架版本号
      */
     private String version;
 
@@ -36,11 +36,6 @@ public class RpcConfig {
     private Integer serverPort;
 
     /**
-     * 开启 Mock 服务代理,模拟调用
-     */
-    private Boolean mock;
-
-    /**
      * 序列化器（默认 JDK）
      */
     private String serializer;
@@ -49,6 +44,12 @@ public class RpcConfig {
      * 注册中心配置
      */
     private RegistryConfig registryConfig = new RegistryConfig();
+
+    /* 消费者端全局配置 */
+    /**
+     * 开启 Mock 服务代理,模拟调用
+     */
+    private Boolean mock;
 
     /**
      * 负载均衡器（默认轮询）
