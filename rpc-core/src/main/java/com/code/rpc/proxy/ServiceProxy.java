@@ -69,10 +69,12 @@ public class ServiceProxy implements InvocationHandler {
         try {
             // 获取服务配置
             RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            log.info("Global RPC Config: " + rpcConfig);
             if (serviceRpcConfig != null) {
-                buildServiceRpcConfig(rpcConfig, serviceRpcConfig);
+                // buildServiceRpcConfig(rpcConfig, serviceRpcConfig);
+                log.info("Service RPC Config: " + serviceRpcConfig);
             }
-            log.info("Service RPC Config: " + rpcConfig);
+
             // 从注册中心获取服务提供者地址
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
             ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
@@ -84,7 +86,13 @@ public class ServiceProxy implements InvocationHandler {
             }
 
             // 负载均衡，选择服务
-            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            String loadBalancerKey;
+            if (StrUtil.isNotBlank(serviceRpcConfig.getLoadBalancer())) {
+                loadBalancerKey = serviceRpcConfig.getLoadBalancer();
+            } else {
+                loadBalancerKey = rpcConfig.getLoadBalancer();
+            }
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(loadBalancerKey);
             // 将调用方法名（请求路径）作为负载均衡参数
             Map<String, Object> requestParams = new HashMap<>();
             requestParams.put("methodName", rpcRequest.getMethodName());
@@ -110,21 +118,53 @@ public class ServiceProxy implements InvocationHandler {
             context.put("serviceList", serviceMetaInfoList);
             context.put("errorService", selectedServiceMetaInfo);
             context.put("rpcRequest", rpcRequest);
-            context.put("loadBalancer", rpcConfig.getLoadBalancer());
+            context.put("loadBalancer", loadBalancerKey);
             String ip = NetUtil.getLocalhostStr();
             context.put("ip", ip);
+            String mockServiceKey;
+            if (StrUtil.isNotBlank(serviceRpcConfig.getMockService())) {
+                mockServiceKey = serviceRpcConfig.getMockService();
+            } else {
+                mockServiceKey = rpcConfig.getMockService();
+            }
+            context.put("mockService", mockServiceKey);
             RpcRequestAction rpcRequestAction = new RpcRequestAction(ip, rpcRequest, selectedServiceMetaInfo);
             // 使用重试机制发起请求
             try {
-                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+                String retryStrategyKey;
+                if (StrUtil.isNotBlank(serviceRpcConfig.getRetryStrategy())) {
+                    retryStrategyKey = serviceRpcConfig.getRetryStrategy();
+                } else {
+                    retryStrategyKey = rpcConfig.getRetryStrategy();
+                }
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(retryStrategyKey);
                 // 添加拦截器
-                ProxyCreator proxyCreator = ProxyCreatorFactory.getInstance(rpcConfig.getProxyCreator());
-                Interceptor interceptor = InterceptorFactory.getInstance(rpcConfig.getInterceptor());
+                String proxyCreatorKey;
+                if (StrUtil.isNotBlank(serviceRpcConfig.getProxyCreator())) {
+                    proxyCreatorKey = serviceRpcConfig.getProxyCreator();
+                } else {
+                    proxyCreatorKey = rpcConfig.getProxyCreator();
+                }
+                ProxyCreator proxyCreator = ProxyCreatorFactory.getInstance(proxyCreatorKey);
+                String interceptorKey;
+                if (StrUtil.isNotBlank(serviceRpcConfig.getInterceptor())) {
+                    interceptorKey = serviceRpcConfig.getInterceptor();
+                } else {
+                    interceptorKey = rpcConfig.getInterceptor();
+                }
+                Interceptor interceptor = InterceptorFactory.getInstance(interceptorKey);
+
                 RetryStrategy interceptorProxy = proxyCreator.createProxy(retryStrategy, interceptor);
                 rpcResponse = interceptorProxy.doRetry(rpcRequestAction);
             } catch (Exception e) {
                 // 容错机制
-                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                String tolerantStrategyKey;
+                if (StrUtil.isNotBlank(serviceRpcConfig.getTolerantStrategy())) {
+                    tolerantStrategyKey = serviceRpcConfig.getTolerantStrategy();
+                } else {
+                    tolerantStrategyKey = rpcConfig.getTolerantStrategy();
+                }
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(tolerantStrategyKey);
                 rpcResponse = tolerantStrategy.doTolerant(context, e);
             }
             return rpcResponse.getData();
@@ -166,6 +206,15 @@ public class ServiceProxy implements InvocationHandler {
         }
         if (StrUtil.isNotBlank(serviceRpcConfig.getMockService())) {
             rpcConfig.setMockService(serviceRpcConfig.getMockService());
+        }
+        if (serviceRpcConfig.getMock() != null) {
+            rpcConfig.setMock(serviceRpcConfig.getMock());
+        }
+        if (StrUtil.isNotBlank(serviceRpcConfig.getProxyCreator())) {
+            rpcConfig.setProxyCreator(serviceRpcConfig.getProxyCreator());
+        }
+        if (StrUtil.isNotBlank(serviceRpcConfig.getInterceptor())) {
+            rpcConfig.setInterceptor(rpcConfig.getInterceptor());
         }
     }
 }

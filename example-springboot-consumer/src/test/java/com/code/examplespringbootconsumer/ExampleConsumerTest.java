@@ -14,15 +14,21 @@ import javax.annotation.Resource;
 class ExampleConsumerTest {
 
     @Resource
-    private ExampleConsumer exampleService;
+    private ExampleConsumer exampleConsumer;
+
+    @Resource
+    private ExampleConsumer2 exampleConsumer2;
+
+    @Resource
+    private ExampleConsumer3 exampleConsumer3;
 
     @Test
     void test1() throws InterruptedException {
-        exampleService.test();
-//        Thread.sleep(2000);
-//        exampleService.test();
-//        Thread.sleep(2000);
-//        exampleService.test();
-//        Thread.sleep(2000);
+        exampleConsumer.test();
+        Thread.sleep(3000);
+        exampleConsumer2.test();
+        Thread.sleep(3000);
+        exampleConsumer3.test();
+        Thread.sleep(3000);
     }
 }

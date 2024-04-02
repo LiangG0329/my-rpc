@@ -6,7 +6,7 @@ package com.code.rpc.interceptor.proxycreator;
  * @author Liang
  * @create 2024/3/29
  */
-public interface ProxyKeys {
+public interface ProxyCreatorKeys {
 
     /**
      * jdk

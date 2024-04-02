@@ -47,7 +47,7 @@ public class ServiceProxyFactory {
      */
     public static <T> T getProxy(Class<T> serviceClass, ServiceRpcConfig serviceRpcConfig) {
 
-        if (RpcApplication.getRpcConfig().getMock() || serviceRpcConfig.isMock()) {
+        if (serviceRpcConfig.getMock() || RpcApplication.getRpcConfig().getMock()) {
             log.info("使用 Mock 服务代理");
             return getMockProxy(serviceClass);
         }

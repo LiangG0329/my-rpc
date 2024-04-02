@@ -1,9 +1,5 @@
 package com.code.rpc.springboot.starter.annotation;
 
-import com.code.rpc.fault.retry.RetryStrategyKeys;
-import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
-import com.code.rpc.loadbalancer.LoadBalancerKeys;
-import com.code.rpc.mock.MockServiceKeys;
 import com.code.rpc.springboot.starter.bootstrap.RpcConsumerBootstrap;
 import com.code.rpc.springboot.starter.bootstrap.RpcInitBootstrap;
 import com.code.rpc.springboot.starter.bootstrap.RpcProviderBootstrap;
@@ -35,17 +31,17 @@ public @interface EnableRpc {
     /**
      * 负载均衡器，默认轮询
      */
-    String loadBalancer() default LoadBalancerKeys.ROUND_ROBIN;
+    String loadBalancer() default "";
 
     /**
      * 重试策略，默认不重试
      */
-    String retryStrategy() default RetryStrategyKeys.NO;
+    String retryStrategy() default "";
 
     /**
      * 容错策略，默认快速失败
      */
-    String tolerantStrategy() default TolerantStrategyKeys.FAIL_FAST;
+    String tolerantStrategy() default "";
 
     /**
      * 是否使用 Mock 服务代理
@@ -55,5 +51,15 @@ public @interface EnableRpc {
     /**
      * 降级服务
      */
-    String mockService() default MockServiceKeys.DEFAULT;
+    String mockService() default "";
+
+    /**
+     * 代理对象创建器，默认jdk代理
+     */
+    String proxyCreator() default "";
+
+    /**
+     * 拦截器，默认日志拦截器
+     */
+    String interceptor() default "";
 }

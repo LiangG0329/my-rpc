@@ -19,8 +19,7 @@ public class FailBackTolerantStrategy implements TolerantStrategy {
     @Override
     public RpcResponse doTolerant(Map<String, Object> context, Exception e) {
         // 获取本地(模拟)服务提供者
-        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
-        MockService mockService = MockServiceFactory.getInstance(rpcConfig.getMockService());
+        MockService mockService = MockServiceFactory.getInstance((String) context.get("mockService"));
         Object mock = mockService.mock();
         return RpcResponse.builder().data(mock).message("ok").build();
     }

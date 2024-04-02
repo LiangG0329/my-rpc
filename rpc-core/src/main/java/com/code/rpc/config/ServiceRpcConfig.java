@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 public class ServiceRpcConfig {
 
     /**
-     * 是否使用 Mock 服务代理
+     * 是否使用 Mock 服务代理，默认 false，全局配置优先
      */
-    private boolean mock;
+    private Boolean mock;
 
     /**
      * 负载均衡器（默认轮询）
@@ -41,4 +41,14 @@ public class ServiceRpcConfig {
      * 降级模拟服务
      */
     private String mockService;
+
+    /**
+     * 代理对象创建器
+     */
+    private String proxyCreator;
+
+    /**
+     * 拦截器
+     */
+    private String interceptor;
 }

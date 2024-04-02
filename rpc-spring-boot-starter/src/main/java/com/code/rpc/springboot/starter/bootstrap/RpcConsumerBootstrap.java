@@ -44,12 +44,17 @@ public class RpcConsumerBootstrap implements BeanPostProcessor {
                 String retryStrategy = rpcReference.retryStrategy();
                 String tolerantStrategy = rpcReference.tolerantStrategy();
                 String mockService = rpcReference.mockService();
+                String proxyCreator = rpcReference.proxyCreator();
+                String interceptor = rpcReference.interceptor();
+
                 ServiceRpcConfig serviceRpcConfig = ServiceRpcConfig.builder()
                         .mock(mock)
                         .loadBalancer(loadBalancer)
                         .retryStrategy(retryStrategy)
                         .tolerantStrategy(tolerantStrategy)
                         .mockService(mockService)
+                        .proxyCreator(proxyCreator)
+                        .interceptor(interceptor)
                         .build();
                 Object proxy = ServiceProxyFactory.getProxy(interfaceClass, serviceRpcConfig);
                 // 为字段注入服务代理对象

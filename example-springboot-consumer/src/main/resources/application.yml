@@ -9,5 +9,5 @@ rpc:
     address: http://localhost:2379
   loadBalancer: random
   retryStrategy: fixedInterval
-  tolerantStrategy: failOver
+  tolerantStrategy: failFast
   mockService: userMockService

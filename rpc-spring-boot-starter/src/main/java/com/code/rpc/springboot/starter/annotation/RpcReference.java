@@ -1,10 +1,6 @@
 package com.code.rpc.springboot.starter.annotation;
 
 import com.code.rpc.constant.RpcConstant;
-import com.code.rpc.fault.retry.RetryStrategyKeys;
-import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
-import com.code.rpc.loadbalancer.LoadBalancerKeys;
-import com.code.rpc.mock.MockServiceKeys;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -47,7 +43,7 @@ public @interface RpcReference {
     String tolerantStrategy() default "";
 
     /**
-     * 是否使用 Mock 服务代理
+     * 是否使用 Mock 服务代理，默认 false，全局配置优先
      */
     boolean mock() default false;
 
@@ -55,4 +51,14 @@ public @interface RpcReference {
      * 降级服务
      */
     String mockService() default "";
+
+    /**
+     * 代理对象创建器
+     */
+    String proxyCreator() default "";
+
+    /**
+     * 拦截器
+     */
+    String interceptor() default "";
 }

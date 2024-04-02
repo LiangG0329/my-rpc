@@ -3,9 +3,7 @@ package com.code.examplespringbootconsumer;
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
 import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
-import com.code.rpc.interceptor.InterceptorKeys;
 import com.code.rpc.interceptor.proxycreator.ProxyCreatorKeys;
-import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.springboot.starter.annotation.RpcReference;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +13,14 @@ import org.springframework.stereotype.Service;
  * @author Liang
  */
 @Service
-public class ExampleConsumer {
+public class ExampleConsumer3 {
 
     /**
      * 使用 Rpc 框架注入
      */
     @RpcReference(interfaceClass = UserService.class,
-            tolerantStrategy = TolerantStrategyKeys.FAIL_SAFE,
-            loadBalancer = LoadBalancerKeys.ROUND_ROBIN,
-            mock = false,
-        proxyCreator = ProxyCreatorKeys.CGLIB,
-        interceptor = InterceptorKeys.LOG)
+            tolerantStrategy = TolerantStrategyKeys.FAIL_OVER,
+            proxyCreator = ProxyCreatorKeys.BYTE_BUDDY)
     private UserService userService;
 
     /**
@@ -33,7 +28,7 @@ public class ExampleConsumer {
      */
     public void test() {
         User user = new User();
-        user.setName("what good thing we lose");
+        user.setName("how are you");
         System.out.println("origin user name: " + user.getName());
         User resultUser = userService.getUser(user);
         if (resultUser != null) {

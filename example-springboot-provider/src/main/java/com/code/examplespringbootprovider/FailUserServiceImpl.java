@@ -6,7 +6,7 @@ import com.code.rpc.springboot.starter.annotation.RpcService;
 import org.springframework.stereotype.Service;
 
 /**
- * 用户服务实现类
+ * 异常用户服务实现类
  *
  * @author Liang
  */

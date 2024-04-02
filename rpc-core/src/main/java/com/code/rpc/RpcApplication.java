@@ -9,7 +9,7 @@ import com.code.rpc.constant.RpcConstant;
 import com.code.rpc.fault.retry.RetryStrategyKeys;
 import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
 import com.code.rpc.interceptor.InterceptorKeys;
-import com.code.rpc.interceptor.proxycreator.ProxyKeys;
+import com.code.rpc.interceptor.proxycreator.ProxyCreatorKeys;
 import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.mock.MockServiceKeys;
 import com.code.rpc.registry.Registry;
@@ -33,7 +33,7 @@ public class RpcApplication {
     /**
      * 全局配置对象
      */
-    private static final RpcConfig rpcConfig = new RpcConfig();
+    private static volatile RpcConfig rpcConfig;
 
     private RpcApplication() {}
 
@@ -72,7 +72,7 @@ public class RpcApplication {
                 newRpcConfig = ConfigUtils.loadConfig(RpcConfig.class, RpcConstant.DEFAULT_CONFIG_PREFIX);
             }
         } catch (Exception e) {
-            // 配置加载失败，使用默认值
+            // 配置加载失败，返回空配置对象
             newRpcConfig = new RpcConfig();
         }
         init(newRpcConfig);
@@ -83,13 +83,13 @@ public class RpcApplication {
      * @return 配置对象
      */
     public static RpcConfig getRpcConfig() {
-//        if(rpcConfig == null) {
-//            synchronized (RpcApplication.class) {
-//                if (rpcConfig == null) {
-//                    init();
-//                }
-//            }
-//        }
+        if(rpcConfig == null) {
+            synchronized (RpcApplication.class) {
+                if (rpcConfig == null) {
+                    rpcConfig = new RpcConfig();
+                }
+            }
+        }
 
         return rpcConfig;
     }
@@ -152,7 +152,7 @@ public class RpcApplication {
 
         // 代理创建器
         if (StrUtil.isBlank(rpcConfig.getProxyCreator())) {
-            rpcConfig.setProxyCreator(ProxyKeys.JDK);
+            rpcConfig.setProxyCreator(ProxyCreatorKeys.JDK);
         }
 
         // 拦截器
