@@ -1,0 +1,5 @@
+# 系统提供代理创建器
+
+jdk=com.code.rpc.interceptor.proxycreator.JdkProxyCreator
+cglib=com.code.rpc.interceptor.proxycreator.CglibProxyCreator
+bytebuddy=com.code.rpc.interceptor.proxycreator.ByteBuddyProxyCreator

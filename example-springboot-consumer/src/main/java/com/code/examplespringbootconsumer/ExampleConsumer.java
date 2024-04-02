@@ -21,7 +21,7 @@ public class ExampleConsumer {
     @RpcReference(interfaceClass = UserService.class,
             tolerantStrategy = TolerantStrategyKeys.FAIL_FAST,
             loadBalancer = LoadBalancerKeys.ROUND_ROBIN,
-            mock = true)
+            mock = false)
     private UserService userService;
 
     /**

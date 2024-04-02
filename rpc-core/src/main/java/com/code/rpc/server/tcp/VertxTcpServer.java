@@ -4,8 +4,6 @@ import com.code.rpc.server.HttpServer;
 import io.vertx.core.Vertx;
 import io.vertx.core.net.NetServer;
 
-import java.util.Arrays;
-
 /**
  * Vertx TCP 服务器
  *
@@ -13,12 +11,6 @@ import java.util.Arrays;
  * @create 2024/3/23
  */
 public class VertxTcpServer implements HttpServer {
-
-    private byte[] handleRequest(byte[] requestData) {
-        System.out.println(Arrays.toString(requestData));
-        // 请求处理逻辑
-        return "hello client".getBytes();
-    }
 
     @Override
     public void doStart(int port) {

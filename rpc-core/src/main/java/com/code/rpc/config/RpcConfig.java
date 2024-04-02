@@ -70,4 +70,14 @@ public class RpcConfig {
      * 降级模拟服务
      */
     private String mockService;
+
+    /**
+     * 代理对象创建器
+     */
+    private String proxyCreator;
+
+    /**
+     * 拦截器
+     */
+    private String interceptor;
 }

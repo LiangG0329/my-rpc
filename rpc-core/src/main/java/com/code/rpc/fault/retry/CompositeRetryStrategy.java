@@ -17,8 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class CompositeRetryStrategy implements RetryStrategy {
 
     /**
-     * 复合等待间隔 重试
-     * <p>
+     * 复合等待间隔重试 <p>
      * 重试条件：出现 Exception 异常时重试
      * <p>
      * 重试等待策略：复合等待间隔（先等待 1s，再随机等待 1s - 3s）

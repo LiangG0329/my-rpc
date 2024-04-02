@@ -8,6 +8,8 @@ import com.code.rpc.config.RpcConfig;
 import com.code.rpc.constant.RpcConstant;
 import com.code.rpc.fault.retry.RetryStrategyKeys;
 import com.code.rpc.fault.tolerant.TolerantStrategyKeys;
+import com.code.rpc.interceptor.InterceptorKeys;
+import com.code.rpc.interceptor.proxycreator.ProxyKeys;
 import com.code.rpc.loadbalancer.LoadBalancerKeys;
 import com.code.rpc.mock.MockServiceKeys;
 import com.code.rpc.registry.Registry;
@@ -146,6 +148,16 @@ public class RpcApplication {
         // 降级模拟服务
         if (StrUtil.isBlank(rpcConfig.getMockService())) {
             rpcConfig.setMockService(MockServiceKeys.DEFAULT);
+        }
+
+        // 代理创建器
+        if (StrUtil.isBlank(rpcConfig.getProxyCreator())) {
+            rpcConfig.setProxyCreator(ProxyKeys.JDK);
+        }
+
+        // 拦截器
+        if (StrUtil.isBlank(rpcConfig.getInterceptor())) {
+            rpcConfig.setInterceptor(InterceptorKeys.LOG);
         }
     }
 }

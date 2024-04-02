@@ -28,7 +28,7 @@ public class VertxTcpClient {
      *
      * @param rpcRequest      携带的 RPC 请求
      * @param serviceMetaInfo 服务元信息
-     * @return RPC响应数据
+     * @return RPC 响应数据
      * @throws ExecutionException
      * @throws InterruptedException
      */

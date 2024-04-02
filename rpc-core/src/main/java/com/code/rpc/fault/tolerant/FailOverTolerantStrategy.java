@@ -30,6 +30,7 @@ public class FailOverTolerantStrategy implements TolerantStrategy {
         ServiceMetaInfo errorService = (ServiceMetaInfo) context.get("errorService");
         RpcRequest rpcRequest = (RpcRequest) context.get("rpcRequest");
         String loadBalancerKey = (String) context.get("loadBalancer");
+        String ip = (String) context.get("ip");
         // 从服务列表移除故障服务，避免重试故障服务
         serviceMetaInfoList.remove(errorService);
         // 重试，调用其他服务节点

@@ -11,3 +11,5 @@ rpc:
   retryStrategy: fixedInterval
   tolerantStrategy: failFast
   mockService: userMockService
+  proxyCreator: bytebuddy
+  interceptor: log

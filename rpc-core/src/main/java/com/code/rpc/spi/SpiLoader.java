@@ -125,6 +125,7 @@ public class SpiLoader {
         if (!instanceCache.containsKey(implClassName)) {
             try {
                 instanceCache.put(implClassName, implClass.getDeclaredConstructor().newInstance());
+                log.info("获取{}类实例", implClassName);
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                      NoSuchMethodException e) {
                 String errorMsg = String.format("%s类实例化失败", implClassName);

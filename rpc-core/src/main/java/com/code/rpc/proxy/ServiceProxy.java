@@ -1,6 +1,7 @@
 package com.code.rpc.proxy;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -12,16 +13,20 @@ import com.code.rpc.fault.retry.RetryStrategy;
 import com.code.rpc.fault.retry.RetryStrategyFactory;
 import com.code.rpc.fault.tolerant.TolerantStrategy;
 import com.code.rpc.fault.tolerant.TolerantStrategyFactory;
+import com.code.rpc.interceptor.Interceptor;
+import com.code.rpc.interceptor.InterceptorFactory;
+import com.code.rpc.interceptor.proxycreator.ProxyCreator;
+import com.code.rpc.interceptor.proxycreator.ProxyCreatorFactory;
 import com.code.rpc.loadbalancer.LoadBalancer;
 import com.code.rpc.loadbalancer.LoadBalancerFactory;
 import com.code.rpc.model.RpcRequest;
+import com.code.rpc.model.RpcRequestAction;
 import com.code.rpc.model.RpcResponse;
 import com.code.rpc.model.ServiceMetaInfo;
 import com.code.rpc.registry.Registry;
 import com.code.rpc.registry.RegistryFactory;
 import com.code.rpc.serializer.Serializer;
 import com.code.rpc.serializer.SerializerFactory;
-import com.code.rpc.server.tcp.VertxTcpClient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -81,7 +86,7 @@ public class ServiceProxy implements InvocationHandler {
             // 负载均衡，选择服务
             LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
             // 将调用方法名（请求路径）作为负载均衡参数
-            Map<String, Object> requestParams =  new HashMap<>();
+            Map<String, Object> requestParams = new HashMap<>();
             requestParams.put("methodName", rpcRequest.getMethodName());
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
             System.out.println("Selected Service Meta Info: " + selectedServiceMetaInfo);
@@ -106,12 +111,17 @@ public class ServiceProxy implements InvocationHandler {
             context.put("errorService", selectedServiceMetaInfo);
             context.put("rpcRequest", rpcRequest);
             context.put("loadBalancer", rpcConfig.getLoadBalancer());
+            String ip = NetUtil.getLocalhostStr();
+            context.put("ip", ip);
+            RpcRequestAction rpcRequestAction = new RpcRequestAction(ip, rpcRequest, selectedServiceMetaInfo);
             // 使用重试机制发起请求
             try {
                 RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
-                rpcResponse = retryStrategy.doRetry(() ->
-                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
-                );
+                // 添加拦截器
+                ProxyCreator proxyCreator = ProxyCreatorFactory.getInstance(rpcConfig.getProxyCreator());
+                Interceptor interceptor = InterceptorFactory.getInstance(rpcConfig.getInterceptor());
+                RetryStrategy interceptorProxy = proxyCreator.createProxy(retryStrategy, interceptor);
+                rpcResponse = interceptorProxy.doRetry(rpcRequestAction);
             } catch (Exception e) {
                 // 容错机制
                 TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
