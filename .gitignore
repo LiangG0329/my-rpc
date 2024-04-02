@@ -38,3 +38,6 @@ build/
 ### Mac OS ###
 .DS_Store!/.idea/
 !/out/
+
+docs/README.md
+docs/rpc2.png

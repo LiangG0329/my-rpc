@@ -3,6 +3,7 @@ package com.code.example.consumer;
 import com.code.example.common.model.User;
 import com.code.example.common.service.UserService;
 import com.code.rpc.RpcApplication;
+import com.code.rpc.bootstrap.ConsumerBootstrap;
 import com.code.rpc.proxy.ServiceProxyFactory;
 
 /**
@@ -15,7 +16,8 @@ public class ConsumerDemo {
 
     public static void main(String[] args) throws InterruptedException {
         // RPC框架初始化
-        RpcApplication.init();
+        //RpcApplication.init();
+        ConsumerBootstrap.init();
 
         // 代理 - 实现消费者发起调用
         // 静态代理
