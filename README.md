@@ -120,7 +120,7 @@ rpc-spring-boot-starter  整合 springboot 封装的 RPC 启动器
      ***引入编码器和解码器的流程图：<br>***
      <img src="./docs/encoderAndDecoder.png" style="zoom:50%;" />
 
-     2） Vert.X 内置的 `RecordParse` 可以保证读取到**特点长度**字符串，采用**装饰者模式**，使用 RecordParse 对 Buffer 处理器增强，解决**半包和粘包**问题。
+     2） Vert.X 内置的 `RecordParse` 可以保证读取到**特定长度**字符串，采用**装饰者模式**，使用 RecordParse 对 Buffer 处理器增强，解决**半包和粘包**问题。
 
 
 - [x] 框架支持**负载均衡**（提供的负载均衡算法：**轮询、随机、一致性哈希**）和自定义负载均衡器（实现接口，修改配置文件，通过SPI机制引入），消费者可根据配置的的负载均衡器，选择服务发起请求
