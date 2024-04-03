@@ -1,4 +1,4 @@
-# my-RPC
+# My-RPC
 
 ## 项目介绍
 
@@ -18,20 +18,21 @@
 
 ```
 my-rpc 框架
-├─rpc-easy                      --rpc框架简易版
-├─rpc-core                      --rpc核心实现类
-├─example-common                --示例代码的公共依赖，包括接口、Model 等
-├─example-consumer              --[示例]服务消费者
-├─example-provider              --[示例]服务提供者
-├─rpc-spring-boot-starter       --rpc框架整合SpringBoot封装的启动器
-├─example-spring-boot-consumer	--[示例]基于spring-boot-starter的服务消费者
-└─example-spring-boot-consumer	--[示例]基于spring-boot-starter的服务提供者
+├── rpc-easy                      --rpc框架简易版
+├── rpc-core                      --rpc核心实现类
+├── example-common                --示例代码的公共依赖，包括接口、Model 等
+├── example-consumer              --[示例]服务消费者
+├── example-provider              --[示例]服务提供者
+├── rpc-spring-boot-starter       --rpc框架整合SpringBoot封装的启动器
+├── example-spring-boot-consumer	--[示例]基于spring-boot-starter的服务消费者
+└── example-spring-boot-consumer	--[示例]基于spring-boot-starter的服务提供者
 ```
 
 ### 核心模块
 
 ```
 rpc-core rpc核心功能
+├── bootstrap               ----> 封装启动类
 ├── config                  ----> 配置类（注册中心配置、RPC框架全局配置、单服务配置）
 ├── registry                ----> 注册中心相关功能
 ├── fault  
@@ -41,11 +42,18 @@ rpc-core rpc核心功能
 ├── loadbalancer            ----> 负载均衡相关功能
 ├── mock                    ----> 模拟（降级）服务相关功能
 ├── registry                ----> 注册中心相关功能
-├── registry                ----> 注册中心相关功能
 ├── protocal                ----> 自定义消息协议
 ├── proxy                   ----> 服务代理
-├── server                  ----> 服务启动配置（客户端、服务器、请求处理器等）
+├── spi                     ----> SPI机制相关功能
+├── utils                   ----> 配置文件加载工具
+├── server                  ----> 网络服务器（客户端、服务器、请求处理器等）
 └── serialize               ----> 序列化相关功能
+```
+### RPC SpringBoot 启动器
+```
+rpc-spring-boot-starter  整合 springboot 封装的 RPC 启动器
+├── annotation             ----> 启动器自定义注解
+└── bootstrap              ----> 注解驱动启动逻辑
 ```
 
 ### 框架架构设计 & 调用流程
@@ -56,7 +64,7 @@ rpc-core rpc核心功能
 
 - [x] 全局配置加载（允许引入框架的项目通过编写配置文件实现**自定义配置**），支持解析 .properties 和 .yml 配置文件
 
-- [x] 接口 Mock（支持mock服务，为调用的服务**创建模拟对象**，跑通业务流程
+- [x] 接口 Mock（支持mock服务，为调用的服务**创建模拟对象**，跑通业务流程）
 
 - [x] **SPI机制**（实现模块化开发和插件化拓展）
 
