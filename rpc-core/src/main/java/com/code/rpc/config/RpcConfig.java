@@ -1,6 +1,5 @@
 package com.code.rpc.config;
 
-import cn.hutool.core.bean.BeanUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RpcConfig {
 
+    /* 通用配置 */
     /**
      * RPC 框架名称
      */
@@ -27,16 +27,6 @@ public class RpcConfig {
     private String version;
 
     /**
-     * 服务器主机名称
-     */
-    private String serverHost;
-
-    /**
-     * 服务器端口号
-     */
-    private Integer serverPort;
-
-    /**
      * 序列化器（默认 JDK）
      */
     private String serializer;
@@ -46,7 +36,18 @@ public class RpcConfig {
      */
     private RegistryConfig registryConfig = new RegistryConfig();
 
-    /* 消费者端全局配置 */
+    /* 服务提供者全局配置 */
+    /**
+     * 服务器主机名称
+     */
+    private String serverHost;
+
+    /**
+     * 服务器端口号
+     */
+    private Integer serverPort;
+
+    /* 服务消费者全局配置 */
     /**
      * 开启 Mock 服务代理,模拟调用
      */
