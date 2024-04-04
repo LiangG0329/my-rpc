@@ -7,8 +7,7 @@ import com.code.rpc.model.ServiceMetaInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.recipes.cache.CuratorCache;
-import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
+import org.apache.curator.framework.recipes.cache.*;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
@@ -123,6 +122,7 @@ public class ZooKeeperRegistry implements Registry{
                     .map(serviceInstance -> {
                         String key = serviceInstance.getPayload().getServiceNodeKey();
                         // 监听 key 变化
+                        notify(serviceKey);
                         watch(key, serviceKey);
                         return serviceInstance.getPayload();
                     })
@@ -165,13 +165,21 @@ public class ZooKeeperRegistry implements Registry{
         String watchKey = ZK_ROOT_PATH + "/" + serviceNodeKey;
         boolean newWatch = watchingKeySet.add(watchKey);
         if (newWatch) {
+            log.info("开始监听服务 {} 的节点 {}", serviceKey, serviceNodeKey);
             CuratorCache curatorCache = CuratorCache.build(client, watchKey);
             curatorCache.start();
             curatorCache.listenable().addListener(
                     CuratorCacheListener
                             .builder()
-                            .forDeletes(childData -> registryServiceCache.clearCache(serviceKey))
-                            .forChanges(((oldNode, node) -> registryServiceCache.clearCache(serviceKey)))
+                            .forDeletes(node -> {
+                                log.info("通知:服务 {} 的节点 {} 下线 ", serviceKey, node.getPath());
+                                watchingKeySet.remove(watchKey);
+                                registryServiceCache.clearCache(serviceKey);
+                            })
+                            .forChanges((oldNode, node) -> {
+                                log.info("通知:服务 {} 的节点 {} 更新 ", serviceKey, node.getPath());
+                                registryServiceCache.clearCache(serviceKey);
+                            })
                             .build()
             );
         }
@@ -179,7 +187,22 @@ public class ZooKeeperRegistry implements Registry{
 
     @Override
     public void notify(String serviceKey) {
-
+        boolean newWatch = watchingKeySet.add(serviceKey);
+        if (newWatch) {
+            log.info("订阅服务 {} ，开启通知", serviceKey);
+            String watchKey = ZK_ROOT_PATH + "/" + serviceKey;
+            CuratorCache curatorCache = CuratorCache.build(client, watchKey);
+            curatorCache.start();
+            curatorCache.listenable().addListener(
+                    CuratorCacheListener
+                            .builder()
+                            .forCreates(node -> {
+                                log.info("通知:服务 {} 的节点 {} 上线 ", serviceKey, node.getPath());
+                                registryServiceCache.clearCache(serviceKey);
+                            })
+                            .build()
+            );
+        }
     }
 
     /**

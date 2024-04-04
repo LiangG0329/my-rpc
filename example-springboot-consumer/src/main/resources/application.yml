@@ -7,6 +7,8 @@ rpc:
   registryConfig:
     registry: etcd
     address: http://localhost:2379
+#    registry: zookeeper
+#    address: localhost:2181
   loadBalancer: roundRobin
   retryStrategy: fixedInterval
   tolerantStrategy: failFast

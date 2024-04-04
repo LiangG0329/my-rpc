@@ -206,7 +206,7 @@ public class EtcdRegistry implements Registry{
                     .map(keyValue -> {
                         String key = keyValue.getKey().toString(StandardCharsets.UTF_8);
                         // 监听 key 变化
-                        notify(searchPrefix);
+                        notify(serviceKey);
                         watch(key, serviceKey);
                         String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
                         return JSONUtil.toBean(value, ServiceMetaInfo.class);
@@ -271,14 +271,14 @@ public class EtcdRegistry implements Registry{
         boolean newWatch = watchingKeySet.add(serviceNodeKey);
         // key未被监听，开启监听
         if (newWatch) {
-            log.info("开始监听节点: {}", serviceNodeKey);
+            log.info("开始监听服务 {} 的节点 {}", serviceKey, serviceNodeKey);
             watchClient.watch(ByteSequence.from(serviceNodeKey, StandardCharsets.UTF_8), watchResponse -> {
                 for (WatchEvent event : watchResponse.getEvents()) {
                     switch (event.getEventType()) {
                         // key 删除时触发
                         case DELETE:
                             // 清理注册服务缓存
-                            log.info("通知:监听节点下线: {}", serviceNodeKey);
+                            log.info("通知:服务 {} 的节点 {} 下线", serviceKey, serviceNodeKey);
                             watchingKeySet.remove(serviceNodeKey);
                             registryServiceCache.clearCache(serviceKey);
                             break;
@@ -292,21 +292,20 @@ public class EtcdRegistry implements Registry{
     }
 
     /**
-     * 新服务节点上线，通知更新缓存（消费端）使用 etcd.Watcher 实现
-     * @param searchPrefix 服务键名
+     * 服务订阅/通知（消费端）
+     * @param serviceKey 服务键名
      */
     @Override
-    public void notify(String searchPrefix) {
-        boolean newWatch = watchingKeySet.add(searchPrefix);
+    public void notify(String serviceKey) {
+        boolean newWatch = watchingKeySet.add(serviceKey);
         // key未被监听，开启监听
-        int beginIndex = ETCD_ROOT_PATH.length();
-        int endIndex = searchPrefix.length() - 1;
-        String serviceKey = searchPrefix.substring(beginIndex, endIndex);
-        ByteSequence prefix = ByteSequence.from(searchPrefix, StandardCharsets.UTF_8);
-        WatchOption option = WatchOption.newBuilder().withPrefix(prefix).build();
         if (newWatch) {
-            log.info("订阅服务，开启通知: {}", serviceKey);
-            watchClient.watch(prefix, option, watchResponse -> {
+            log.info("订阅服务 {} ，开启通知", serviceKey);
+            String searchPrefix = ETCD_ROOT_PATH + serviceKey + "/";
+            ByteSequence watchKey = ByteSequence.from("", StandardCharsets.UTF_8);
+            ByteSequence prefix = ByteSequence.from(searchPrefix, StandardCharsets.UTF_8);
+            WatchOption option = WatchOption.newBuilder().withPrefix(prefix).build();
+            watchClient.watch(watchKey, option, watchResponse -> {
                 for (WatchEvent event : watchResponse.getEvents()) {
                     switch (event.getEventType()) {
                         // key 更新(新节点上线)时触发

@@ -25,7 +25,7 @@ public class ExampleConsumer {
             loadBalancer = LoadBalancerKeys.ROUND_ROBIN,
             mock = false,
         mockService = "userMockService",
-        proxyCreator = ProxyCreatorKeys.CGLIB,
+        proxyCreator = ProxyCreatorKeys.JDK,
         interceptor = InterceptorKeys.LOG)
     private UserService userService;
 

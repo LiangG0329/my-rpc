@@ -44,5 +44,17 @@ class ExampleConsumerTest {
         exampleConsumer.test();  // 缓存未命中
         Thread.sleep(10000);
         exampleConsumer.test();  // 缓存命中
+        Thread.sleep(1000000);
+    }
+
+    @Test
+    void testZooKeeper() throws InterruptedException {
+        exampleConsumer.test(); //
+        Thread.sleep(30000);
+        exampleConsumer.test();  // 缓存命中
+        Thread.sleep(30000);
+        exampleConsumer.test();  // 缓存命中
+        Thread.sleep(30000);
+        exampleConsumer.test();
     }
 }

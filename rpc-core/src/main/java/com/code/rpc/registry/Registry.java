@@ -49,14 +49,14 @@ public interface Registry {
     void heartBeat();
 
     /**
-     * 监听（消费端）
+     * 节点监听（消费端）
      * @param serviceNodeKey 服务节点键名
      */
     void watch(String serviceNodeKey, String serviceKey);
 
     /**
-     * 通知（消费端）
-     * @param searchPrefix 查询前缀
+     * 服务订阅/通知（消费端）
+     * @param serviceKey 服务键名
      */
-    void notify(String searchPrefix);
+    void notify(String serviceKey);
 }
