@@ -1,6 +1,9 @@
 package com.code.rpc.registry;
 
+import com.code.rpc.RpcApplication;
+import com.code.rpc.config.RpcConfig;
 import com.code.rpc.model.ServiceMetaInfo;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Liang
  * @create 2024/3/22
  */
-
+@Slf4j
 public class RegistryServiceCache {
 
     /**
@@ -39,7 +42,15 @@ public class RegistryServiceCache {
     /**
      * 清空缓存
      */
-    void clearCache() {
-        this.serviceCache.clear();
+    void clearCache(String serviceKey) {
+        log.info("消费端清空服务 {} 缓存", serviceKey);
+        this.serviceCache.remove(serviceKey);
+    }
+
+    void updateCache(String serviceKey) {
+        clearCache(serviceKey);
+        Registry registry = RegistryFactory.getInstance(RpcApplication.getRpcConfig().getRegistryConfig().getRegistry());
+        List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceKey);
+        writeCache(serviceKey, serviceMetaInfoList);
     }
 }

@@ -123,7 +123,7 @@ public class ZooKeeperRegistry implements Registry{
                     .map(serviceInstance -> {
                         String key = serviceInstance.getPayload().getServiceNodeKey();
                         // 监听 key 变化
-                        watch(key);
+                        watch(key, serviceKey);
                         return serviceInstance.getPayload();
                     })
                     .collect(Collectors.toList());
@@ -161,7 +161,7 @@ public class ZooKeeperRegistry implements Registry{
     }
 
     @Override
-    public void watch(String serviceNodeKey) {
+    public void watch(String serviceNodeKey, String serviceKey) {
         String watchKey = ZK_ROOT_PATH + "/" + serviceNodeKey;
         boolean newWatch = watchingKeySet.add(watchKey);
         if (newWatch) {
@@ -170,11 +170,16 @@ public class ZooKeeperRegistry implements Registry{
             curatorCache.listenable().addListener(
                     CuratorCacheListener
                             .builder()
-                            .forDeletes(childData -> registryServiceCache.clearCache())
-                            .forChanges(((oldNode, node) -> registryServiceCache.clearCache()))
+                            .forDeletes(childData -> registryServiceCache.clearCache(serviceKey))
+                            .forChanges(((oldNode, node) -> registryServiceCache.clearCache(serviceKey)))
                             .build()
             );
         }
+    }
+
+    @Override
+    public void notify(String serviceKey) {
+
     }
 
     /**

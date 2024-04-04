@@ -25,10 +25,10 @@ class ExampleConsumerTest {
     @Test
     void test1() throws InterruptedException {
         exampleConsumer.test();
+        Thread.sleep(200000);
+        //exampleConsumer2.test();
         //Thread.sleep(3000);
-        exampleConsumer2.test();
-        //Thread.sleep(3000);
-        exampleConsumer3.test();
+        //exampleConsumer3.test();
         //Thread.sleep(3000);
     }
 }

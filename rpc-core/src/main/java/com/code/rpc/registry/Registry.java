@@ -32,7 +32,7 @@ public interface Registry {
     void unRegister(ServiceMetaInfo serviceMetaInfo);
 
     /**
-     * 服务发现 （根据服务键名，获取相关服务的所有节点  消费端）
+     * 服务发现 （根据服务键名，获取相关服务的所有节点）（消费端）
      * @param serviceKey 服务键名
      * @return 服务元信息列表
      */
@@ -50,7 +50,13 @@ public interface Registry {
 
     /**
      * 监听（消费端）
-     * @param serviceNodeKey 服务节点键
+     * @param serviceNodeKey 服务节点键名
      */
-    void watch(String serviceNodeKey);
+    void watch(String serviceNodeKey, String serviceKey);
+
+    /**
+     * 通知（消费端）
+     * @param searchPrefix 查询前缀
+     */
+    void notify(String searchPrefix);
 }

@@ -1,0 +1,4 @@
+# 用户自定义容错策略
+
+failBack=com.code.rpc.fault.tolerant.FailBackTolerantStrategy
+failSafe=com.code.rpc.fault.tolerant.FailSafeTolerantStrategy

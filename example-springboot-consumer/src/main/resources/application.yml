@@ -7,7 +7,7 @@ rpc:
   registryConfig:
     registry: etcd
     address: http://localhost:2379
-  loadBalancer: random
+  loadBalancer: roundRobin
   retryStrategy: fixedInterval
   tolerantStrategy: failFast
   mockService: userMockService

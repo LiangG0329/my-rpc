@@ -71,6 +71,6 @@ public class RegistryTest {
         // init 方法中已经执行心跳检测了
         register();
         // 阻塞 1 分钟
-        Thread.sleep(60 * 1000L);
+        Thread.sleep(600* 1000L);
     }
 }

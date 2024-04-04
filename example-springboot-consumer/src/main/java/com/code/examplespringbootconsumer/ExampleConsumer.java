@@ -21,9 +21,10 @@ public class ExampleConsumer {
      * 使用 Rpc 框架注入
      */
     @RpcReference(interfaceClass = UserService.class,
-            tolerantStrategy = TolerantStrategyKeys.FAIL_SAFE,
+            tolerantStrategy = TolerantStrategyKeys.FAIL_BACK,
             loadBalancer = LoadBalancerKeys.ROUND_ROBIN,
             mock = false,
+        mockService = "userMockService",
         proxyCreator = ProxyCreatorKeys.CGLIB,
         interceptor = InterceptorKeys.LOG)
     private UserService userService;
