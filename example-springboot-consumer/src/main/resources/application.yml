@@ -11,3 +11,4 @@ rpc:
   retryStrategy: fixedInterval
   tolerantStrategy: failFast
   mockService: userMockService
+  cacheExpireTime: 30

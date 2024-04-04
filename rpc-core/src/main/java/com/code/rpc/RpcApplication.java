@@ -159,5 +159,10 @@ public class RpcApplication {
         if (StrUtil.isBlank(rpcConfig.getInterceptor())) {
             rpcConfig.setInterceptor(InterceptorKeys.LOG);
         }
+
+        // 缓存过期时间
+        if (StrUtil.isBlank(rpcConfig.getCacheExpireTime())) {
+            rpcConfig.setCacheExpireTime("100");
+        }
     }
 }

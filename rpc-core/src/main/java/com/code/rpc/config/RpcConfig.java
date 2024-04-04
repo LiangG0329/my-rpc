@@ -59,12 +59,12 @@ public class RpcConfig {
     private String loadBalancer;
 
     /**
-     * 重试策略
+     * 重试策略（默认不重试）
      */
     private String retryStrategy;
 
     /**
-     * 容错策略
+     * 容错策略（默认快速失败）
      */
     private String tolerantStrategy;
 
@@ -74,12 +74,17 @@ public class RpcConfig {
     private String mockService;
 
     /**
-     * 代理对象创建器
+     * 代理对象创建器（默认 JDK 创建代理）
      */
     private String proxyCreator;
 
     /**
-     * 拦截器
+     * 拦截器（默认日志拦截器）
      */
     private String interceptor;
+
+    /**
+     * 服务缓存过期时间，单位：秒 （默认 100s）
+     */
+    private String cacheExpireTime;
 }

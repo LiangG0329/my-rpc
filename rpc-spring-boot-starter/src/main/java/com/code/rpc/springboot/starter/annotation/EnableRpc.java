@@ -27,39 +27,44 @@ public @interface EnableRpc {
     boolean needServer() default true;
 
 
-    /* 消费者全局配置 */
+    /* 消费端全局配置 */
     /**
-     * 负载均衡器，默认轮询
+     * 负载均衡器，默认轮询（消费端）
      */
     String loadBalancer() default "";
 
     /**
-     * 重试策略，默认不重试
+     * 重试策略，默认不重试（消费端）
      */
     String retryStrategy() default "";
 
     /**
-     * 容错策略，默认快速失败
+     * 容错策略，默认快速失败（消费端）
      */
     String tolerantStrategy() default "";
 
     /**
-     * 是否使用 Mock 服务代理
+     * 是否使用 Mock 服务代理（消费端）
      */
     boolean mock() default false;
 
     /**
-     * 降级服务
+     * 降级服务（消费端）
      */
     String mockService() default "";
 
     /**
-     * 代理对象创建器，默认jdk代理
+     * 代理对象创建器，默认jdk代理（消费端）
      */
     String proxyCreator() default "";
 
     /**
-     * 拦截器，默认日志拦截器
+     * 拦截器，默认日志拦截器（消费端）
      */
     String interceptor() default "";
+
+    /**
+     * 本地服务缓存过期时间，单位：秒，默认 100s （消费端）
+     */
+    String cacheExpireTime() default "";
 }

@@ -45,6 +45,7 @@ public class RpcInitBootstrap implements ImportBeanDefinitionRegistrar {
             String mockService = (String) annotationAttributes.get("mockService");
             String proxyCreator = (String) annotationAttributes.get("proxyCreator");
             String interceptor = (String) annotationAttributes.get("interceptor");
+            String cacheExpireTime = (String) annotationAttributes.get("cacheExpireTime");
             rpcConfig.setLoadBalancer(loadBalancer);
             rpcConfig.setRetryStrategy(retryStrategy);
             rpcConfig.setTolerantStrategy(tolerantStrategy);
@@ -52,6 +53,7 @@ public class RpcInitBootstrap implements ImportBeanDefinitionRegistrar {
             rpcConfig.setMockService(mockService);
             rpcConfig.setProxyCreator(proxyCreator);
             rpcConfig.setInterceptor(interceptor);
+            rpcConfig.setCacheExpireTime(cacheExpireTime);
         }
 
         // RPC框架初始化（配置和注册中心）

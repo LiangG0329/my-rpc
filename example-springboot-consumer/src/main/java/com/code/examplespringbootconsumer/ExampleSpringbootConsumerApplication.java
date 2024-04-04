@@ -15,7 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         retryStrategy = RetryStrategyKeys.FIBONACCI_INTERVAL,
         tolerantStrategy = TolerantStrategyKeys.FAIL_SAFE,
         mockService = MockServiceKeys.DEFAULT,
-        proxyCreator = ProxyCreatorKeys.JDK)
+        proxyCreator = ProxyCreatorKeys.JDK,
+        cacheExpireTime = "40")
 public class ExampleSpringbootConsumerApplication {
 
     public static void main(String[] args) {

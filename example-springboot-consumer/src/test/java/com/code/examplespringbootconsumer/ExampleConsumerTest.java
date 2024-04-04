@@ -31,4 +31,18 @@ class ExampleConsumerTest {
         //exampleConsumer3.test();
         //Thread.sleep(3000);
     }
+
+    @Test
+    void testCacheExpire() throws InterruptedException {
+        // 缓存设置修改后40s过期
+        exampleConsumer.test(); // 缓存未命中
+        Thread.sleep(10000);
+        exampleConsumer.test();  // 缓存命中
+        Thread.sleep(5000);
+        exampleConsumer.test();  // 缓存命中
+        Thread.sleep(30000);
+        exampleConsumer.test();  // 缓存未命中
+        Thread.sleep(10000);
+        exampleConsumer.test();  // 缓存命中
+    }
 }
