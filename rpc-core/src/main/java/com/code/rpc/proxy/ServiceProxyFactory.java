@@ -25,9 +25,10 @@ public class ServiceProxyFactory {
     public static <T> T getProxy(Class<T> serviceClass) {
 
         if (RpcApplication.getRpcConfig().getMock()) {
-            log.info("使用 Mock 服务代理");
+            log.info("当前消费者使用的服务 {} 开启 Mock 服务代理", serviceClass.getName());
             return getMockProxy(serviceClass);
         }
+        log.info("当前消费者使用的服务 {} 未开启 Mock 服务代理", serviceClass.getName());
 
         Object proxyInstance = Proxy.newProxyInstance(
                 serviceClass.getClassLoader(),
@@ -48,9 +49,10 @@ public class ServiceProxyFactory {
     public static <T> T getProxy(Class<T> serviceClass, ServiceRpcConfig serviceRpcConfig) {
 
         if (serviceRpcConfig.getMock() || RpcApplication.getRpcConfig().getMock()) {
-            log.info("使用 Mock 服务代理");
+            log.info("当前消费者使用的服务 {} 开启 Mock 服务代理", serviceClass.getName());
             return getMockProxy(serviceClass);
         }
+        log.info("当前消费者使用的服务 {} 未开启 Mock 服务代理", serviceClass.getName());
 
         Object proxyInstance = Proxy.newProxyInstance(
                 serviceClass.getClassLoader(),

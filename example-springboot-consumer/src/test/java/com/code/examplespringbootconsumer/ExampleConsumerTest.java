@@ -50,11 +50,11 @@ class ExampleConsumerTest {
     @Test
     void testZooKeeper() throws InterruptedException {
         exampleConsumer.test(); //
-        Thread.sleep(30000);
-        exampleConsumer.test();  // 缓存命中
-        Thread.sleep(30000);
-        exampleConsumer.test();  // 缓存命中
-        Thread.sleep(30000);
+        Thread.sleep(10000);
+        exampleConsumer.test();  //
+        Thread.sleep(10000);
+        exampleConsumer.test();  //
+        Thread.sleep(10000);
         exampleConsumer.test();
     }
 }
